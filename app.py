@@ -264,10 +264,8 @@ def main():
         if filtered_tracks:
             display_data = [{
                 "Title": t['name'], 
-                "Year": t.get('release_year', '-'),
-                "Pop": t.get('popularity', '-'),
-                "Energy": f"{int(t.get('energy',0)*100)}%",
-                "Mood": f"{int(t.get('valence',0)*100)}%"
+                "Album": t['album'],
+                "Year": t.get('release_year', '-')
             } for t in filtered_tracks]
             st.dataframe(display_data, use_container_width=True, hide_index=True)
 
