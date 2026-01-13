@@ -19,6 +19,9 @@ import streamlit as st
 # Load environment variables
 load_dotenv()
 
+SCOPE = "user-library-read playlist-modify-public playlist-modify-private"
+
+
 def get_credentials():
     """
     Retrieve credentials from Streamlit secrets (deployment) or environment variables (local).
@@ -97,7 +100,4 @@ def get_spotify_client(token_info):
     return spotipy.Spotify(auth=token_info['access_token']), token_info
 
 
-if __name__ == "__main__":
-    print("This module provides authentication helpers.")
-    print(f"Client ID present: {bool(CLIENT_ID)}")
-    print(f"Redirect URI: {REDIRECT_URI}")
+
