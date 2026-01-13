@@ -5,7 +5,7 @@ Spotify Artist Search Script
 Searches for an artist and returns matches.
 """
 
-import argparse
+
 import sys
 import json
 import spotipy

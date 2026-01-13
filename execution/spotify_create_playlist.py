@@ -5,8 +5,7 @@ Spotify Create Playlist
 Creates a playlist and adds tracks to it.
 """
 
-import sys
-import spotipy
+
 
 def create_playlist_for_user(sp, user_id, name, description, public=True):
     """Create a new playlist."""

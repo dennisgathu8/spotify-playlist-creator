@@ -9,7 +9,7 @@ Filters to ensure artist is a primary performer.
 import sys
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-import os
+
 from dotenv import load_dotenv
 
 # Load environment variables

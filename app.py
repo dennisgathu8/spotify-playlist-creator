@@ -1,5 +1,5 @@
 import streamlit as st
-import time
+
 from execution import spotify_auth
 from execution import spotify_search_artist
 from execution import spotify_get_artist_tracks
