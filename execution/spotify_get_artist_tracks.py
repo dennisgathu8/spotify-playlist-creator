@@ -69,17 +69,74 @@ def get_all_artist_tracks(sp, artist_id, artist_name, progress_callback=None):
                 
                 if track_name_key not in seen_track_names:
                     seen_track_names.add(track_name_key)
+                    # Extract Year
+                    release_year = album['release_date'][:4] if album.get('release_date') else "2000"
+                    
                     all_tracks.append({
                         'name': track['name'],
                         'uri': track['uri'],
                         'id': track['id'],
                         'album': album['name'],
+                        'release_year': int(release_year) if release_year.isdigit() else 2000,
                         'duration_ms': track['duration_ms']
                     })
                     
     if progress_callback:
         progress_callback(f"Found {len(all_tracks)} unique tracks.")
         
+    # 3. Fetch Popularity (Needed for Deep Cuts) - Batch size 50
+    if all_tracks:
+        if progress_callback:
+            progress_callback("Fetching popularity scores...")
+        
+        track_ids = [t['id'] for t in all_tracks]
+        
+        # Batch requests for Tracks (limit 50)
+        for i in range(0, len(track_ids), 50):
+            batch = track_ids[i:i + 50]
+            try:
+                tracks_full = sp.tracks(batch)['tracks']
+                for j, full_track in enumerate(tracks_full):
+                    if full_track:
+                        all_tracks[i+j]['popularity'] = full_track['popularity']
+                    else:
+                        all_tracks[i+j]['popularity'] = 0
+            except Exception as e:
+                print(f"Error fetching popularity for batch {i}: {e}")
+
+    # 4. Fetch Audio Features (Optional but recommended for "Vibe" filtering)
+    # limit is 100 tracks per call
+    if all_tracks:
+        if progress_callback:
+            progress_callback("Analyzing audio features (vibes)...")
+        
+        # Batch requests for Audio Features (limit 100)
+        for i in range(0, len(track_ids), 100):
+            batch = track_ids[i:i + 100]
+            try:
+                features_list = sp.audio_features(batch)
+                
+                # Merge back
+                for j, features in enumerate(features_list):
+                    if features: # specific track might fail
+                        # Calculate array index
+                        track_idx = i + j
+                        all_tracks[track_idx].update({
+                            'danceability': features['danceability'],
+                            'energy': features['energy'],
+                            'valence': features['valence'],
+                            'tempo': features['tempo'],
+                            'instrumentalness': features['instrumentalness']
+                        })
+                    else:
+                        # Fallback defaults if analysis fails
+                        all_tracks[i+j].update({
+                            'danceability': 0.5, 'energy': 0.5, 'valence': 0.5, 'tempo': 120, 'instrumentalness': 0
+                        })
+            except Exception as e:
+                # If a batch fails, just continue
+                print(f"Error fetching audio features for batch {i}: {e}")
+                
     return all_tracks
 
 if __name__ == "__main__":

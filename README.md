@@ -1,69 +1,54 @@
-# Spotify Artist Playlist Creator
+# Spotify Creator Xt 🎵
 
-A Streamlit application that generates complete playlists for any artist on Spotify.
+**The Premium Playlist Experience.**
 
-## Features
+Unlock the full potential of your music library with advanced filtering, East African Hip Hop discovery, and a sleek "Neon Noir" interface.
 
-- **OAuth Authentication**: Secure login with your Spotify account
-- **Artist Search**: Find any artist on Spotify
-- **Discography Fetching**: improved algorithm to fetch albums and singles
-- **Smart Filtering**: Ensures artist is a primary performer (filters out compilation appearances)
-- **Playlist Generation**: Creates a new playlist in your library with one click
+## ✨ Features
 
-## Setup
+### 🌟 Discovery Center
+- **East African Legends Wall**: One-click access to discographies of **E-Sir, Kalamashaka, Ukoo Flani**, and **Professor Jay**.
+- **Smart Search**: Find any artist on Spotify with instant visual feedback.
 
-1. **Prerequisites**
-   - Python 3.8+
-   - Spotify Developer Account
+### 🎚️ Playlist Studio
+Once you select an artist, unlock pro-level tools:
+- **Vibe Tuner**: Slider controls for **Energy** (Hype) and **Mood** (Happy/Sad).
+- **💎 Deep Cuts Mode**: Automatically filter out the radio hits to find hidden gems.
+- **📀 Era Selector**: Isolate tracks from specific years (e.g., Golden Era '95-'05).
+- **Presets**: Instant "Party", "Sad", or "Old School" configurations.
 
-2. **Installation**
+### 🎨 Premium UI
+- **Glassmorphism Design**: sleek dark mode with blur effects.
+- **Responsive**: Works beautifully on desktop and mobile.
+
+## 🚀 Deployment
+
+### Prerequisites
+- Python 3.8+
+- Spotify Developer Credentials
+
+### Local Setup
+1. **Clone & Install**
    ```bash
-   # Clone the repository
-   git clone <your-repo-url>
-   cd <project-folder>
-
-   # Create virtual environment
-   python3 -m venv venv
-   source venv/bin/activate
-
-   # Install dependencies
+   git clone <your-repo>
    pip install -r requirements.txt
    ```
 
-3. **Configuration**
-   - Create a Spotify App at [developer.spotify.com](https://developer.spotify.com/dashboard)
-   - Set Redirect URI to `http://localhost:8501/` (or your deployed URL)
-   - Create `.env` file:
-     ```bash
-     SPOTIPY_CLIENT_ID=your_id
-     SPOTIPY_CLIENT_SECRET=your_secret
-     SPOTIPY_REDIRECT_URI=http://localhost:8501/
-     ```
+2. **Configure Secrets**
+   Create a `.env` file:
+   ```bash
+   SPOTIPY_CLIENT_ID=your_id
+   SPOTIPY_CLIENT_SECRET=your_secret
+   SPOTIPY_REDIRECT_URI=http://localhost:8501/
+   ```
 
-## Usage
+3. **Run**
+   ```bash
+   streamlit run app.py
+   ```
 
-```bash
-streamlit run app.py
-```
-
-## Deployment
-
-To deploy on Streamlit Community Cloud:
-
-1. Push this code to a GitHub repository.
-2. Login to [Streamlit Cloud](https://streamlit.io/cloud).
-3. Connect your GitHub and select the repository.
-4. In the "Advanced Settings" of deployment, add your secrets:
-   - `SPOTIPY_CLIENT_ID`
-   - `SPOTIPY_CLIENT_SECRET`
-   - `SPOTIPY_REDIRECT_URI` (Set this to your deployed app's URL)
-   - **Important**: Update your Spotify Dashboard to include the new Deployed URL in Redirect URIs.
-
-## Structure
-
-- `app.py`: Main application logic
-- `execution/`: Core logic modules
-  - `spotify_auth.py`: Authentication handler
-  - `spotify_search_artist.py`: Search functionality
-  - `spotify_get_artist_tracks.py`: Algorithm to fetch tracks
-  - `spotify_create_playlist.py`: Playlist management logic
+## ☁️ Streamlit Cloud Deployment
+1. Push this code to GitHub.
+2. Connect your repo on [Streamlit Cloud](https://streamlit.io/cloud).
+3. Add your secrets in the Advanced Settings.
+4. Enjoy!
