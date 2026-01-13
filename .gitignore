@@ -3,6 +3,8 @@
 
 # Environment variables and secrets
 .env
+.cache
+
 
 # Google OAuth credentials
 credentials.json
