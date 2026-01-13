@@ -59,7 +59,27 @@ def main():
         else:
             # Show login button
             auth_url = spotify_auth.get_auth_url()
-            st.markdown(f'<a href="{auth_url}" target="_self"><button style="background-color:#1DB954;color:white;padding:12px 24px;border:none;border-radius:25px;font-size:16px;cursor:pointer;width:100%">Login with Spotify</button></a>', unsafe_allow_html=True)
+            
+            # Use HTML link with target="_top" to break out of iframe (fix for Firefox/Streamlit Cloud)
+            st.markdown(f"""
+                <a href="{auth_url}" target="_top" style="text-decoration: none;">
+                    <button style="
+                        width: 100%;
+                        background-color: #1DB954;
+                        color: white;
+                        border-radius: 25px;
+                        border: none;
+                        padding: 10px 20px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        font-family: inherit;
+                        font-size: 1rem;
+                    ">
+                        Login with Spotify
+                    </button>
+                </a>
+            """, unsafe_allow_html=True)
+            
             st.info("Please login to verify your Spotify premium account and enable playlist creation.")
             return
 
