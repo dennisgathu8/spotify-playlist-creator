@@ -61,23 +61,33 @@ def main():
             auth_url = spotify_auth.get_auth_url()
             
             # Use HTML link with target="_top" to break out of iframe (fix for Firefox/Streamlit Cloud)
+            # Use HTML link with target="_top" to break out of iframe (fix for Firefox/Streamlit Cloud)
+            # Styled as a button but using only <a> tag to be valid HTML
             st.markdown(f"""
-                <a href="{auth_url}" target="_top" style="text-decoration: none;">
-                    <button style="
-                        width: 100%;
-                        background-color: #1DB954;
-                        color: white;
-                        border-radius: 25px;
-                        border: none;
-                        padding: 10px 20px;
-                        font-weight: bold;
-                        cursor: pointer;
-                        font-family: inherit;
-                        font-size: 1rem;
-                    ">
-                        Login with Spotify
-                    </button>
+                <a href="{auth_url}" target="_top" style="
+                    display: inline-block;
+                    width: 100%;
+                    background-color: #1DB954;
+                    color: white;
+                    text-align: center;
+                    border-radius: 25px;
+                    padding: 10px 20px;
+                    font-weight: bold;
+                    text-decoration: none;
+                    font-family: sans-serif;
+                    cursor: pointer;
+                    box-sizing: border-box;
+                    line-height: normal;
+                ">
+                    Login with Spotify
                 </a>
+                <style>
+                /* Hover effect for the custom link */
+                a[href^="https://accounts.spotify.com"]:hover {{
+                    background-color: #1ed760 !important;
+                    color: white !important;
+                }}
+                </style>
             """, unsafe_allow_html=True)
             
             st.info("Please login to verify your Spotify premium account and enable playlist creation.")
