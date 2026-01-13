@@ -58,13 +58,17 @@ def main():
                 st.error(f"Authentication failed: {str(e)}")
         else:
             # Show login button
-            auth_url = spotify_auth.get_auth_url()
-            
-            # Use HTML link with target="_top" to break out of iframe (fix for Firefox/Streamlit Cloud)
-            # Use HTML link with target="_top" to break out of iframe (fix for Firefox/Streamlit Cloud)
-            # Styled as a button but using only <a> tag to be valid HTML
+            try:
+                auth_url = spotify_auth.get_auth_url()
+            except Exception as e:
+                st.error(f"Error generating login URL: {e}")
+                st.info("Please check your Streamlit Cloud Secrets configuration.")
+                return
+
+            # Use HTML link with target="_blank" (safest for iframes)
+            # Styled as a button but using only <a> tag
             st.markdown(f"""
-                <a href="{auth_url}" target="_top" style="
+                <a href="{auth_url}" target="_blank" style="
                     display: inline-block;
                     width: 100%;
                     background-color: #1DB954;
@@ -81,6 +85,9 @@ def main():
                 ">
                     Login with Spotify
                 </a>
+                <div style="text-align: center; margin-top: 10px; font-size: 0.8em; color: #666;">
+                    (Opens in a new tab)
+                </div>
                 <style>
                 /* Hover effect for the custom link */
                 a[href^="https://accounts.spotify.com"]:hover {{
@@ -89,6 +96,11 @@ def main():
                 }}
                 </style>
             """, unsafe_allow_html=True)
+            
+            # Debug/Fallback: Show the raw URL if the button fails
+            with st.expander("Having trouble logging in?"):
+                st.write("Copy and paste this URL into your browser:")
+                st.code(auth_url)
             
             st.info("Please login to verify your Spotify premium account and enable playlist creation.")
             return
