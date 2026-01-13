@@ -19,12 +19,30 @@ st.set_page_config(
 st.markdown(ui_components.get_custom_css(), unsafe_allow_html=True)
 
 # East African Legends Data
-LEGENDS = [
-    {"name": "E-Sir", "img": "https://i.scdn.co/image/ab67616d0000b2732924151fb789648937996c97", "desc": "The South C Finest. Kenyan Legend."},
-    {"name": "Kalamashaka", "img": "https://i.scdn.co/image/ab67616d0000b273c501173aa447d92823053303", "desc": "Pioneering Dandora Hip Hop."},
-    {"name": "Ukoo Flani", "img": "https://i.scdn.co/image/ab67616d0000b27344443916295574514571de43", "desc": "The Mau Mau Camp Masters."},
-    {"name": "Professor Jay", "img": "https://i.scdn.co/image/ab67616d0000b273e925c4efc687258455855239", "desc": "Tanzanian Hip Hop Heavyweight."},
-]
+# East African Hip Hop Data
+EAST_AFRICA_ARTISTS = {
+    "Kenyan Legends (The OGs)": [
+        {"name": "E-Sir", "img": "https://i.scdn.co/image/ab67616d0000b2732924151fb789648937996c97", "desc": "The South C Finest. Creating timeless bangers."},
+        {"name": "Kalamashaka", "img": "https://i.scdn.co/image/ab67616d0000b273c501173aa447d92823053303", "desc": "Pioneering Dandora Hip Hop."},
+        {"name": "Ukoo Flani", "img": "https://i.scdn.co/image/ab67616d0000b27344443916295574514571de43", "desc": "The Mau Mau Camp Masters."},
+        {"name": "Juacali", "img": "https://i.scdn.co/image/ab67616d0000b273f1f9bf90f2819d2f600d240e", "desc": "King of Genge. Bidii Yangu."},
+        {"name": "Nonini", "img": "https://i.scdn.co/image/ab6761610000e5ebc2a38a8c31361fc51824a70c", "desc": "The Godfather of Genge."},
+        {"name": "Nameless", "img": "https://i.scdn.co/image/ab6761610000e5eb4f3d2f913612502802279124", "desc": "Megarider Legend."},
+    ],
+    "Tanzanian Titans": [
+        {"name": "Professor Jay", "img": "https://i.scdn.co/image/ab67616d0000b273e925c4efc687258455855239", "desc": "Heavyweight MC. Bongo Flava Pioneer."},
+        {"name": "Juma Nature", "img": "https://i.scdn.co/image/ab67616d0000b2731874b335607da61688fa900e", "desc": "Sir Nature. Temeke's Finest."},
+        {"name": "Fid Q", "img": "https://i.scdn.co/image/ab6761610000e5eb232e9f688f87a8f3794f2fce", "desc": "The strict lyricist of Bongo Hip Hop."},
+        {"name": "AY", "img": "https://i.scdn.co/image/ab6761610000e5eb6ffd0cfc0bffa61a16821941", "desc": "Commercial Hip Hop Pioneer."},
+        {"name": "Mwana FA", "img": "https://i.scdn.co/image/ab6761610000e5eb13b578c95bdeba723f533b41", "desc": "The lyrical poet. Binamu."},
+    ],
+    "New Wave (Sheng Masters)": [
+        {"name": "Wakadinali", "img": "https://i.scdn.co/image/ab6761610000e5eb7418e987f9f29992ba9bb9a1", "desc": "Rong Rende. Drill Kings."},
+        {"name": "Khaligraph Jones", "img": "https://i.scdn.co/image/ab6761610000e5eb36ce86bbce174db5a330cdbc", "desc": "The OG. Respect the Jones."},
+        {"name": "Nyashinski", "img": "https://i.scdn.co/image/ab6761610000e5eb352136e0bfbb563378d30e38", "desc": "From Klepto to Solo King."},
+        {"name": "Breeder LW", "img": "https://i.scdn.co/image/ab6761610000e5eb832cb1fabae29508ac893183", "desc": "Bazenga Daddii."},
+    ]
+}
 
 def main():
     # Auth Flow (Preserved)
@@ -111,20 +129,30 @@ def main():
                             st.error("Artist not found!")
 
         st.divider()
-        st.subheader("East African Legends")
-        st.write("Curated selections from the Golden Era.")
+        st.divider()
+        st.subheader("East African Hip Hop Hall of Fame")
+        st.write("Curated selections from across the region.")
         
-        # Wall of Legends Grid
-        cols = st.columns(4)
-        for idx, legend in enumerate(LEGENDS):
-            with cols[idx]:
-                ui_components.render_legend_card(legend['name'], legend['img'], legend['desc'])
-                if st.button(f"Select {legend['name']}", key=f"legend_{idx}"):
-                    with st.spinner("Loading Legend..."):
-                        results = spotify_search_artist.search_artist(sp, legend['name'])
-                        if results:
-                            st.session_state['current_artist'] = results[0]
-                            st.rerun()
+        for category, artists in EAST_AFRICA_ARTISTS.items():
+            st.markdown(f"### {category}")
+            # Dynamic columns based on count, wrapping every 4
+            cols = st.columns(4)
+            for idx, legend in enumerate(artists):
+                col_idx = idx % 4
+                if idx > 0 and col_idx == 0:
+                     # Create new row every 4 items
+                     cols = st.columns(4)
+                
+                with cols[col_idx]:
+                    ui_components.render_legend_card(legend['name'], legend['img'], legend['desc'])
+                    # Unique key for every button
+                    btn_key = f"btn_{legend['name'].replace(' ', '_')}"
+                    if st.button(f"Select {legend['name']}", key=btn_key):
+                        with st.spinner(f"Loading {legend['name']}..."):
+                            results = spotify_search_artist.search_artist(sp, legend['name'])
+                            if results:
+                                st.session_state['current_artist'] = results[0]
+                                st.rerun()
 
     else:
         # --- ARTIST STUDIO VIEW ---
